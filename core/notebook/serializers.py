@@ -8,6 +8,25 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("id", "title", "order")
 
 
+class CategoryCountSerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField()
+
+    class Meta:
+        model = Category
+        fields = ("id", "title", "order", "count")
+
+
+class CategoryCountMethodSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField(method_name="get_count")
+
+    class Meta:
+        model = Category
+        fields = ("id", "title", "order", "count")
+
+    def get_count(self, obj):
+        return obj.posts.all().count()
+
+
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media

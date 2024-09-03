@@ -36,7 +36,7 @@ class Post(models.Model):
         Category,
         on_delete=models.CASCADE,
         verbose_name=_("Category"),
-        related_name="category",
+        related_name="posts",
     )
     title = models.CharField(_("Title"), max_length=255)
     image = models.ManyToManyField(to=Media, related_name="post_image")
