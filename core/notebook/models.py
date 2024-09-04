@@ -1,8 +1,22 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
-User = get_user_model()
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    fullname = models.CharField(_("Fullname"), max_length=255)
+    info = models.CharField(_("Info"), max_length=255)
+    facebook = models.CharField(_("Facebook"), max_length=255, null=True, blank=True)
+    twitter = models.CharField(_("Twitter"), max_length=255, null=True, blank=True)
+    instagram = models.CharField(_("Instagram"), max_length=255, null=True, blank=True)
+    avatar = models.FileField(
+        _("Avatar"), upload_to="profile_avatar", null=True, blank=True
+    )
+    description = models.TextField(_("Description"), null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Category(models.Model):
@@ -53,3 +67,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PostView(models.Model):
+    post = models.ForeignKey(Post, related_name="views", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    view_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("post", "user")
+
+    def __str__(self):
+        return f"{self.user} - {self.post}"

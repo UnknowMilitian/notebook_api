@@ -1,5 +1,45 @@
+from django.contrib.auth.models import AnonymousUser
 from rest_framework import serializers
-from notebook.models import User, Category, Media, Post
+from django.contrib.auth import get_user_model
+from notebook.models import Profile, Category, Media, Post
+
+User = get_user_model()
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ["fullname", "info", "facebook", "twitter", "instagram"]
+
+
+class ProfileDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = [
+            "fullname",
+            "info",
+            "facebook",
+            "twitter",
+            "instagram",
+            "avatar",
+            "description",
+        ]
+
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "profile"]
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    profile_detail = ProfileDetailSerializer(source="profile", read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "profile_detail"]
 
 
 class CategorySerializer(serializers.ModelSerializer):

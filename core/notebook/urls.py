@@ -1,9 +1,13 @@
 from django.urls import path
-from . import views  # Импортируем файл views, где определен TopAuthorsAPIView
+from . import views
 
 app_name = "notebook"
 
 urlpatterns = [
+    path("users", views.UserAPIView.as_view(), name="users"),
+    path(
+        "user-detail/<int:pk>", views.UserDetailAPIView.as_view(), name="users_detail"
+    ),
     path("categories", views.CategoryListAPIView.as_view(), name="category_list"),
     path(
         "category/<int:pk>",
@@ -24,6 +28,8 @@ urlpatterns = [
     path(
         "recently-posts", views.RecentlyPostListAPIView.as_view(), name="recently_list"
     ),
+    path("popular-posts", views.PopularPostsAPIView.as_view(), name="popular_posts"),
+    path("todays-posts", views.TodaysPostsAPIView.as_view(), name="todays_posts"),
     path(
         "featured-this-month-posts",
         views.FeaturedThisMonthAPIVIew.as_view(),
