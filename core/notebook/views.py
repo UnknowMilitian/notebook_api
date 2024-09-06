@@ -52,19 +52,6 @@ class UserDetailAPIView(APIView):
             )
 
 
-class CategoryListAPIView(ListAPIView):
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
-
-
-class CategoryDetailAPIView(APIView):
-    def get(self, request, pk):
-        category = Category.objects.get(pk=pk)
-        serializer = CategorySerializer(category)
-
-        return Response(serializer.data)
-
-
 class CategoryCountAPIView(APIView):
     def get(self, request):
         categories = (
@@ -79,11 +66,6 @@ class CategoryCountMethodAPIView(APIView):
         categories = Category.objects.prefetch_related("posts").all()
         serializer = CategoryCountMethodAPIView(categories, many=True)
         return Response(serializer.data)
-
-
-class MediaListAPIView(ListAPIView):
-    serializer_class = MediaSerializer
-    queryset = Media.objects.all()
 
 
 class PostListAPIView(ListAPIView):
@@ -149,3 +131,32 @@ class TopAuthorsAPIView(ListAPIView):
     queryset = User.objects.annotate(count_post=Count("posts")).order_by("-count_post")[
         :3
     ]
+
+
+# For creating CRUD for models
+class CategoryListAPIView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = LimitOffsetPagination
+
+
+class CategoryRetriveAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class MediaListAPIView(generics.ListCreateAPIView):
+    queryset = Media.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = LimitOffsetPagination
+
+
+class PostListAPIView(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = LimitOffsetPagination
+
+
+class PostRetriveAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = CategorySerializer

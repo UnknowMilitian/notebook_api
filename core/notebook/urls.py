@@ -11,7 +11,7 @@ urlpatterns = [
     path("categories", views.CategoryListAPIView.as_view(), name="category_list"),
     path(
         "category/<int:pk>",
-        views.CategoryDetailAPIView.as_view(),
+        views.CategoryRetriveAPIView.as_view(),
         name="category_detail",
     ),
     path(
@@ -24,7 +24,7 @@ urlpatterns = [
     ),
     path("medias", views.MediaListAPIView.as_view(), name="media_list"),
     path("posts", views.PostListAPIView.as_view(), name="post_list"),
-    path("post-detail/<int:pk>", views.PostDetailAPIView.as_view(), name="post_detail"),
+    path("post-detail/<int:pk>", views.PostRetriveAPIView.as_view(), name="post_detail"),
     path(
         "recently-posts", views.RecentlyPostListAPIView.as_view(), name="recently_list"
     ),
